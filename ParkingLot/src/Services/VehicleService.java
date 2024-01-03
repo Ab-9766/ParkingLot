@@ -1,0 +1,31 @@
+package Services;
+
+import Models.ENUMS.VehicleType;
+import Models.Vehicle;
+import Repositories.VehicleRepository;
+
+import java.util.Optional;
+
+public class VehicleService {
+    private VehicleRepository vehicleRepository;
+
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
+    }
+
+    public Vehicle getVehicle(String vehicleNumber, VehicleType vehicleType) {
+        Optional<Vehicle> vehicleWrapper =vehicleRepository.fetchVehicleByNumber(vehicleNumber);
+        if(vehicleWrapper.isEmpty())
+        {
+            Vehicle vehicle= new Vehicle();
+            vehicle.setVehicleNumber(vehicleNumber);
+            vehicle.setVehicleType(vehicleType);
+
+            Vehicle savedVehicle= vehicleRepository.save(vehicle);
+            return savedVehicle;
+        }
+        else{
+            return vehicleWrapper.get();
+        }
+    }
+}

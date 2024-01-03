@@ -4,7 +4,7 @@ import DTOs.GenerateTicketRequestDTO;
 import DTOs.GenerateTicketResponseDTO;
 import DTOs.ResponseStatus;
 import Models.Ticket;
-import Services.Strategies.TicketService;
+import Services.TicketService;
 
 public class TicketController {
     private TicketService ticketService;
@@ -13,11 +13,13 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    GenerateTicketResponseDTO generateTicket(GenerateTicketRequestDTO requestDTO){
-        GenerateTicketResponseDTO responseDTO= null;
+    public GenerateTicketResponseDTO generateTicket(GenerateTicketRequestDTO requestDTO){
+        GenerateTicketResponseDTO responseDTO= new GenerateTicketResponseDTO();
 
         try {
-           Ticket ticket= ticketService.generateTicket(requestDTO);
+           Ticket ticket= ticketService.generateTicket(requestDTO.getGateId(),
+                   requestDTO.getVehicleNumber(),
+                   requestDTO.getVehicleType());
            responseDTO.setGenerateTicketID(ticket.getId());
            responseDTO.setStatus(ResponseStatus.SUCCESS);
             responseDTO.setMessage("Ticket Generated Successfully");
